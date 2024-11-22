@@ -3,19 +3,17 @@ import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 import numpy as np
-import sqlite3
+from sqlalchemy import create_engine
 
 # Função para salvar o DataFrame no banco de dados
 def save_to_db(df):
-    conn = sqlite3.connect('dados_empresas.db')
-    df.to_sql('empresas', conn, if_exists='replace', index=False)
-    conn.close()
+    engine = create_engine('sqlite:///dados_empresas.db')
+    df.to_sql('empresas', engine, if_exists='replace', index=False)
 
 # Função para ler o DataFrame do banco de dados
 def load_from_db():
-    conn = sqlite3.connect('dados_empresas.db')
-    df = pd.read_sql('SELECT * FROM empresas', conn)
-    conn.close()
+    engine = create_engine('sqlite:///dados_empresas.db')
+    df = pd.read_sql('empresas', engine)
     return df
 
 # Carregar e salvar o CSV no banco de dados
@@ -79,57 +77,4 @@ st.pyplot(fig1)
 # Gráfico de barras
 faixas = [0.47, 4.814, 9.628, 14.442, 19.256, 24.07]
 labels = ["faixa1", "faixa2", "faixa3", "faixa4", "faixa5"]
-df["faixa"] = pd.cut(df["change2"], bins=faixas, labels=labels, include_lowest=True)
-
-st.subheader("Gráfico de Barras")
-fig2, ax2 = plt.subplots(figsize=(12, 6))
-sns.barplot(data=df, x="empresas", y="valor", ax=ax2, palette="viridis")
-ax2.set_title("Valor da ação por empresa", fontsize=16)
-ax2.set_xlabel("Empresas", fontsize=14)
-ax2.set_ylabel("Valores ($)", fontsize=14)
-ax2.set_xticklabels(
-    ax2.get_xticklabels(), rotation=45, ha="right"
-)
-st.pyplot(fig2)
-
-# Histograma
-st.subheader("Histograma")
-fig3, ax3 = plt.subplots(figsize=(12, 6))
-sns.histplot(
-    data=df,
-    x="change2",
-    hue="faixa",
-    multiple="stack",
-    palette="viridis",
-    kde=False,
-    bins=10,
-    ax=ax3,
-)
-ax3.set_title("Histograma: Quantidade de empresas por % de Variação do valor da ação", fontsize=16)
-ax3.set_xlabel("Variação (%)", fontsize=14)
-ax3.set_ylabel("Frequência (Empresas)", fontsize=14)
-ax3.grid(axis="y", linestyle="--", alpha=0.7)
-st.pyplot(fig3)
-
-# Dispersão
-st.subheader("Gráfico de Dispersão")
-fig4, ax4 = plt.subplots(figsize=(12, 6))
-sns.scatterplot(data=df,
-                x="valor",
-                y="change",
-                hue="empresas",
-                style="empresas",
-                palette="bright",
-                markers=["o", "s", "D"],
-                sizes=(20, 200),
-                ax=ax4)
-
-# Adicionando título e rótulos
-ax4.set_title("Gráfico de Dispersão: Valor x Variação ($)", fontsize=16)
-ax4.set_xlabel("Valor ($)", fontsize=14)
-ax4.set_ylabel("Variação ($)", fontsize=14)
-
-# Adicionando legenda
-plt.legend(title="Empresas")
-
-st.pyplot(fig4)
+df
