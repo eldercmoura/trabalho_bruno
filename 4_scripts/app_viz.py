@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import seaborn as sns
 import plotly.express as px
+import matplotlib.pyplot as plt
 import numpy as np
 
 st.write("**DADOS DA EMPRESA ESCOLHIDA**")
