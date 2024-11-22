@@ -3,27 +3,29 @@ import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 import numpy as np
-from sqlalchemy import create_engine
+import sqlite3
 
 # Função para salvar o DataFrame no banco de dados
 def save_to_db(df):
-    engine = create_engine('sqlite:///dados_empresas.db')
-    df.to_sql('empresas', engine, if_exists='replace', index=False)
+    conn = sqlite3.connect('dados_empresas.db')
+    df.to_sql('empresas', conn, if_exists='replace', index=False)
+    conn.close()
 
 # Função para ler o DataFrame do banco de dados
 def load_from_db():
-    engine = create_engine('sqlite:///dados_empresas.db')
-    df = pd.read_sql('empresas', engine)
+    conn = sqlite3.connect('dados_empresas.db')
+    df = pd.read_sql('SELECT * FROM empresas', conn)
+    conn.close()
     return df
 
 # Carregar e salvar o CSV no banco de dados
-df = pd.read_csv("./1_bases_tratadas/basestratadas.csv", sep=";", encoding="utf-8")
+df = pd.read_csv("../1_bases_tratadas/basestratadas.csv", sep=";", encoding="utf-8")
 save_to_db(df)
 
 # Ler o DataFrame do banco de dados
 df = load_from_db()
 
-st.write("**DADOS DA EMPRESA ESCOLHIDA**")
+st.write("*DADOS DA EMPRESA ESCOLHIDA*")
 st.sidebar.header("Trending Tickers neste momento:")
 
 # Landing page e seleção
