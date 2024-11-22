@@ -4,6 +4,7 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 import numpy as np
 import sqlite3
+from sqlalchemy import create_engine 
 
 # Função para salvar o DataFrame no banco de dados
 def save_to_db(df):
