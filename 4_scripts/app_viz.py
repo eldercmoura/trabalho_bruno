@@ -19,7 +19,7 @@ def load_from_db():
     return df
 
 # Carregar e salvar o CSV no banco de dados
-df = pd.read_csv("../1_bases_tratadas/basestratadas.csv", sep=";", encoding="utf-8")
+df = pd.read_csv("./1_bases_tratadas/basestratadas.csv", sep=";", encoding="utf-8")
 save_to_db(df)
 
 # Ler o DataFrame do banco de dados
