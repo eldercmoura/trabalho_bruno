@@ -4,17 +4,11 @@ import seaborn as sns
 import plotly.express as px
 import numpy as np
 
-import streamlit as st
-import pandas as pd
-import seaborn as sns
-import matplotlib.pyplot as plt
-import numpy as np
-
 st.write("**DADOS DA EMPRESA ESCOLHIDA**")
 st.sidebar.header("Trending Tickers neste momento:")
 
 #landing page e seleção
-df = pd.read_csv("../1_bases_tratadas/basestratadas.csv", sep=";", encoding="utf-8")
+df = pd.read_csv("./1_bases_tratadas/basestratadas.csv", sep=";", encoding="utf-8")
 empresas = df["empresas"].drop_duplicates()
 empresa_escolhida = st.sidebar.selectbox("Escolha uma empresa", empresas)
 
